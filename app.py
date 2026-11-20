@@ -62,9 +62,8 @@ def login():
     if request.method == "POST":
         u = request.form.get("username", "")
         p = request.form.get("password", "")
-        q = ("SELECT id, name, role, password FROM users "
-            "WHERE username = ?")
-        row = db().execute(q, (u,)).fetchone()
+        q = "SELECT id, name, role, password FROM users WHERE username = '%s'" % u
+        row = db().execute(q).fetchone()
         if row and verify_pw(p,row["password"]):
             session["uid"], session["name"], session["role"] = row["id"], row["name"], row["role"]
             return redirect(url_for("index"))
