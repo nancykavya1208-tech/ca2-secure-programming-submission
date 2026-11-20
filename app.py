@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 load_dotenv()
 app.secret_key = os.environ["SECRET_KEY"]
-DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "expenses.db")
+DB = os.environ.get("APP_DB", os.path.join(os.path.dirname(os.path.abspath(__file__)), "expenses.db"))
 
 
 def db():

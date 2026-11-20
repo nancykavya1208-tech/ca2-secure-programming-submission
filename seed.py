@@ -1,6 +1,6 @@
 """Create expenses.db with sample data. No real people, no real money."""
 import hashlib, os, sqlite3, bcrypt
-DB = os.path.join(os.path.dirname(os.path.abspath(__file__)), "expenses.db")
+DB = os.environ.get("APP_DB", os.path.join(os.path.dirname(os.path.abspath(__file__)), "expenses.db"))
 if os.path.exists(DB):
     os.remove(DB)
 c = sqlite3.connect(DB)
