@@ -1,0 +1,76 @@
+policies:
+  - id: "AC-01"
+    description: "Staff user can access their own claim"
+    user: "jdoe"
+    password: "password1"
+    method: "GET"
+    path: "/claim/1"
+    expected_status: 200
+    expected_contains: ["Dublin Coach"]
+    expected_not_contains: []
+    cwe: ""
+    wstg: ""
+
+  - id: "AC-02"
+    description: "Staff user cannot access another user's claim (IDOR)"
+    user: "jdoe"
+    password: "password1"
+    method: "GET"
+    path: "/claim/3"
+    expected_status: 404
+    expected_contains: []
+    expected_not_contains: ["Tesco"]
+    cwe: "CWE-639"
+    wstg: "WSTG-ATHZ-04"
+
+  - id: "AC-03"
+    description: "Staff user cannot access admin endpoint"
+    user: "jdoe"
+    password: "password1"
+    method: "GET"
+    path: "/admin/users"
+    expected_status: 403
+    expected_contains: []
+    expected_not_contains: ["System Admin", "jdoe", "rsmith", "achen"]
+    cwe: "CWE-862"
+    wstg: "WSTG-ATHZ-02"
+
+  - id: "AC-04"
+    description: "Anonymous user redirected to login for admin endpoint"
+    user: ""
+    password: ""
+    method: "GET"
+    path: "/admin/users"
+    expected_status: 302
+    expected_contains: []
+    expected_not_contains: ["System Admin"]
+    cwe: "CWE-862"
+    wstg: "WSTG-ATHZ-02"
+
+  - id: "AC-05"
+    description: "Anonymous user cannot create claim"
+    user: ""
+    password: ""
+    method: "POST"
+    path: "/claim/new"
+    data:
+      merchant: "Test Merchant"
+      amount: "100.00"
+      note: "Test note"
+    expected_status: 302
+    expected_contains: []
+    expected_not_contains: []
+    cwe: "CWE-306"
+    wstg: "WSTG-ATHN-01"
+
+  - id: "AC-06"
+    description: "Path traversal blocked on receipt endpoint"
+    user: "jdoe"
+    password: "password1"
+    method: "GET"
+    path: "/receipt?f=../app.py"
+    expected_status: 403
+    expected_contains: []
+    expected_not_contains: ["Flask", "import", "secret_key"]
+    cwe: "CWE-22"
+    wstg: "WSTG-ATHZ-01"
