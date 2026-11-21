@@ -23,7 +23,7 @@ app = Flask(__name__)
 load_dotenv()
 app.secret_key = os.environ["SECRET_KEY"]
 DB = os.environ.get("APP_DB", os.path.join(os.path.dirname(os.path.abspath(__file__)), "expenses.db"))
-
+STRIPE_SECRET_KEY = "sk_live_51H8x92KlmNpQrStUvWxYz1234567890abcd"
 
 def db():
     if "db" not in g:
