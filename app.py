@@ -84,7 +84,7 @@ def logout():
 def claim(cid):
     if "uid" not in session:
         return redirect(url_for("login"))
-    row = db().execute("SELECT * FROM claims WHERE id = ? AND user_id = ?", (cid,session["uid"])).fetchone()
+    row = db().execute("SELECT * FROM claims WHERE id = ?", (cid,)).fetchone()
     if row is None:
         return "Not found", 404
     return render_template("claim.html", c=row)
